@@ -1,58 +1,687 @@
-INGENIERÍA DE SISTEMAS
-Conversor Multibase & ALU
-Python + Flask
-PROYECTO ACADÉMICO
-Sistemas numéricos y arquitectura digital
-Convierte números entre bases, valida el tamaño del registro, observa los algoritmos y simula operaciones lógicas bit a bit.
-Nombre del estudiante
-MÓDULO 1
-Entrada de datos
-Esperando datos
-Número a procesar
-Base de entrada
-                    Binario (Base 2)
-                    Octal (Base 8)
-                    Decimal (Base 10)
-                    Hexadecimal (Base 16)
-                
-Tamaño de palabra
-                    8 bits — Byte
-                    16 bits — Word
-                    32 bits — DWord
-                    64 bits — QWord
-                
-Convertir número
-FASE 1
-Validador de arquitectura y máscaras
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor Multibase & ALU</title>
+    <style>
+* { box-sizing: border-box; }
 
-MÓDULO 2
-Salida multibase
-BINARIO — Copiar
-OCTAL — Copiar
-DECIMAL — Copiar
-HEXADECIMAL — Copiar
-FASE 2
-Motor de conversión cruzada
-Nodo central → Base 10 → Bases destino
-Base de entrada → Base 10
+:root {
+    --bg: #080d19;
+    --surface: #101827;
+    --surface2: #151f31;
+    --border: #263650;
+    --text: #edf4ff;
+    --muted: #98a9c6;
+    --accent: #7657ff;
+    --accent2: #3d8bff;
+    --success: #27cf8b;
+    --danger: #ff6175;
+    --warning: #ffc15b;
+}
 
-Base 10 → Base 2
+body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--text);
+    background:
+        radial-gradient(circle at 12% 0%, rgba(118,87,255,.20), transparent 28%),
+        radial-gradient(circle at 92% 8%, rgba(61,139,255,.14), transparent 26%),
+        var(--bg);
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
 
-FASE 3
-Simulador ALU
-Operación bit a bit
-Cadena binaria A 1010
-Operación
-                    AND
-                    OR
-                    XOR
-                
-Cadena binaria B 1100
-Ejecutar ALU
-RESULTADO —
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px clamp(18px, 5vw, 75px);
+    border-bottom: 1px solid rgba(255,255,255,.07);
+    background: rgba(8,13,25,.78);
+    backdrop-filter: blur(16px);
+}
 
-ENTREGA
-Proyecto listo para publicar
-Completa el nombre y, después de desplegar en Vercel, entrega el enlace público de la aplicación.
-Copiar enlace
-Conversor Multibase & ALU · Proyecto académico
+h1, h2, h3, h4, p { margin-top: 0; }
+h1 { margin-bottom: 0; font-size: 1.35rem; }
+h1 span { color: #9a87ff; }
+h2 { margin-bottom: 10px; font-size: clamp(1.7rem, 4vw, 2.8rem); line-height: 1.08; }
+h3 { margin-bottom: 4px; }
+h4 { margin-bottom: 12px; }
+p { color: var(--muted); line-height: 1.6; }
+
+.eyebrow {
+    display: block;
+    margin-bottom: 6px;
+    color: #a696ff;
+    font-size: .68rem;
+    font-weight: 900;
+    letter-spacing: .15em;
+}
+
+.python-badge, .algorithm-badge {
+    padding: 8px 11px;
+    border: 1px solid rgba(118,87,255,.35);
+    border-radius: 999px;
+    color: #c7bcff;
+    background: rgba(118,87,255,.1);
+    font-size: .75rem;
+    font-weight: 800;
+}
+
+.container {
+    width: min(1240px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 45px 0 65px;
+}
+
+.intro {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 25px;
+    margin-bottom: 20px;
+}
+
+.student-box {
+    width: min(100%, 330px);
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: rgba(16,24,39,.82);
+}
+
+.card {
+    margin-bottom: 18px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: rgba(16,24,39,.88);
+    box-shadow: 0 18px 50px rgba(0,0,0,.16);
+}
+
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 18px;
+    border-bottom: 1px solid var(--border);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 14px;
+    padding: 18px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--muted);
+    font-size: .8rem;
+    font-weight: 800;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    outline: none;
+    color: var(--text);
+    background: #0a1220;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font: inherit;
+}
+
+input:focus, select:focus {
+    border-color: var(--accent);
+}
+
+button {
+    cursor: pointer;
+    border: 0;
+    border-radius: 10px;
+    padding: 11px 15px;
+    color: white;
+    font: inherit;
+    font-weight: 850;
+    transition: transform .15s, opacity .15s;
+}
+
+button:hover { transform: translateY(-1px); }
+.primary {
+    margin: 0 18px 18px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+}
+.secondary { background: #263754; }
+button:disabled { opacity: .55; cursor: wait; }
+
+.status {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: .72rem;
+    font-weight: 850;
+}
+.status.neutral { color: #b9c8e2; background: #24334f; }
+.status.success { color: #66e4ad; background: rgba(39,207,139,.12); }
+.status.error { color: #ff8998; background: rgba(255,97,117,.12); }
+
+.validation-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 18px;
+}
+
+.validation-item {
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #0b1322;
+}
+.validation-item span { display: block; color: var(--muted); font-size: .7rem; }
+.validation-item strong { display: block; margin-top: 5px; }
+
+.result-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding: 18px;
+}
+
+.result-item {
+    position: relative;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: #0b1322;
+}
+
+.result-item span {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--muted);
+    font-size: .7rem;
+    font-weight: 850;
+}
+
+.result-item strong {
+    display: block;
+    min-height: 29px;
+    padding-right: 5px;
+    overflow-wrap: anywhere;
+    color: #eef4ff;
+    font: 800 1.1rem "SFMono-Regular", Consolas, monospace;
+}
+
+.result-item button {
+    margin-top: 12px;
+    padding: 6px 9px;
+    color: #b9c8e2;
+    background: #1d2b43;
+    font-size: .72rem;
+}
+
+.algorithm-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    padding: 18px;
+}
+
+.steps {
+    max-height: 290px;
+    overflow: auto;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #080f1c;
+    font: 13px/1.8 "SFMono-Regular", Consolas, monospace;
+}
+
+.step {
+    padding: 5px 0;
+    border-bottom: 1px dashed rgba(255,255,255,.07);
+}
+.step:last-child { border-bottom: 0; }
+
+.alu-form {
+    display: grid;
+    grid-template-columns: 1fr 160px 1fr;
+    gap: 14px;
+    padding: 18px;
+}
+
+#aluBtn { margin: 0 18px 18px; }
+
+.alu-result {
+    margin: 0 18px 18px;
+    padding: 18px;
+    text-align: center;
+    border: 1px solid rgba(39,207,139,.25);
+    border-radius: 14px;
+    background: rgba(39,207,139,.06);
+}
+
+.alu-result > span {
+    display: block;
+    color: var(--muted);
+    font-size: .7rem;
+    font-weight: 850;
+}
+
+.alu-result > strong {
+    display: block;
+    margin: 8px 0 15px;
+    font: 900 1.6rem "SFMono-Regular", Consolas, monospace;
+}
+
+.alu-table {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.alu-bit {
+    padding: 9px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: #0b1322;
+    font-family: monospace;
+}
+
+.hidden { display: none; }
+
+.delivery {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(118,87,255,.12), rgba(61,139,255,.05));
+}
+
+footer {
+    padding: 22px;
+    text-align: center;
+    color: #6f7e9c;
+    border-top: 1px solid rgba(255,255,255,.06);
+    font-size: .8rem;
+}
+
+@media (max-width: 850px) {
+    .intro { align-items: stretch; flex-direction: column; }
+    .student-box { width: 100%; }
+    .form-grid, .result-grid, .validation-grid { grid-template-columns: 1fr 1fr; }
+    .algorithm-columns { grid-template-columns: 1fr; }
+    .alu-form { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 520px) {
+    .topbar { align-items: flex-start; gap: 12px; }
+    .python-badge { display: none; }
+    .section-title { align-items: flex-start; flex-direction: column; }
+    .form-grid, .result-grid, .validation-grid { grid-template-columns: 1fr; }
+    .delivery { align-items: stretch; flex-direction: column; }
+    .delivery button { width: 100%; }
+}
+
+</style>
+</head>
+<body>
+<header class="topbar">
+    <div>
+        <span class="eyebrow">INGENIERÍA DE SISTEMAS</span>
+        <h1>Conversor Multibase <span>&amp;</span> ALU</h1>
+    </div>
+    <div class="python-badge">Python + Flask</div>
+</header>
+
+<main class="container">
+    <section class="intro">
+        <div>
+            <span class="eyebrow">PROYECTO ACADÉMICO</span>
+            <h2>Sistemas numéricos y arquitectura digital</h2>
+            <p>
+                Convierte números entre bases, valida el tamaño del registro,
+                observa los algoritmos y simula operaciones lógicas bit a bit.
+            </p>
+        </div>
+        <div class="student-box">
+            <label for="student">Nombre del estudiante</label>
+            <input id="student" type="text" placeholder="Escribe tu nombre">
+        </div>
+    </section>
+
+    <section class="card input-card">
+        <div class="section-title">
+            <div>
+                <span class="eyebrow">MÓDULO 1</span>
+                <h3>Entrada de datos</h3>
+            </div>
+            <span id="inputStatus" class="status neutral">Esperando datos</span>
+        </div>
+
+        <div class="form-grid">
+            <div>
+                <label for="number">Número a procesar</label>
+                <input id="number" type="text" placeholder="Ejemplo: 101101">
+            </div>
+            <div>
+                <label for="base">Base de entrada</label>
+                <select id="base">
+                    <option value="2">Binario (Base 2)</option>
+                    <option value="8">Octal (Base 8)</option>
+                    <option value="10" selected>Decimal (Base 10)</option>
+                    <option value="16">Hexadecimal (Base 16)</option>
+                </select>
+            </div>
+            <div>
+                <label for="bits">Tamaño de palabra</label>
+                <select id="bits">
+                    <option value="8">8 bits — Byte</option>
+                    <option value="16">16 bits — Word</option>
+                    <option value="32">32 bits — DWord</option>
+                    <option value="64">64 bits — QWord</option>
+                </select>
+            </div>
+        </div>
+
+        <button id="convertBtn" class="primary">Convertir número</button>
+    </section>
+
+    <section id="validationCard" class="card validation-card hidden">
+        <div class="section-title">
+            <div>
+                <span class="eyebrow">FASE 1</span>
+                <h3>Validador de arquitectura y máscaras</h3>
+            </div>
+        </div>
+        <div id="validationGrid" class="validation-grid"></div>
+    </section>
+
+    <section id="resultsCard" class="card hidden">
+        <div class="section-title">
+            <div>
+                <span class="eyebrow">MÓDULO 2</span>
+                <h3>Salida multibase</h3>
+            </div>
+            <span id="architectureBadge" class="status success"></span>
+        </div>
+
+        <div class="result-grid">
+            <article class="result-item">
+                <span>BINARIO</span>
+                <strong id="binaryResult">—</strong>
+                <button data-copy="binaryResult">Copiar</button>
+            </article>
+            <article class="result-item">
+                <span>OCTAL</span>
+                <strong id="octalResult">—</strong>
+                <button data-copy="octalResult">Copiar</button>
+            </article>
+            <article class="result-item">
+                <span>DECIMAL</span>
+                <strong id="decimalResult">—</strong>
+                <button data-copy="decimalResult">Copiar</button>
+            </article>
+            <article class="result-item">
+                <span>HEXADECIMAL</span>
+                <strong id="hexResult">—</strong>
+                <button data-copy="hexResult">Copiar</button>
+            </article>
+        </div>
+    </section>
+
+    <section id="algorithmCard" class="card hidden">
+        <div class="section-title">
+            <div>
+                <span class="eyebrow">FASE 2</span>
+                <h3>Motor de conversión cruzada</h3>
+            </div>
+            <span class="algorithm-badge">Nodo central → Base 10 → Bases destino</span>
+        </div>
+
+        <div class="algorithm-columns">
+            <div>
+                <h4>Base de entrada → Base 10</h4>
+                <div id="positionalSteps" class="steps"></div>
+            </div>
+            <div>
+                <h4>Base 10 → Base 2</h4>
+                <div id="divisionSteps" class="steps"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="card alu-card">
+        <div class="section-title">
+            <div>
+                <span class="eyebrow">FASE 3</span>
+                <h3>Simulador ALU</h3>
+            </div>
+            <span class="status neutral">Operación bit a bit</span>
+        </div>
+
+        <div class="alu-form">
+            <div>
+                <label for="aluA">Cadena binaria A</label>
+                <input id="aluA" type="text" value="1010" maxlength="64">
+            </div>
+            <div>
+                <label for="operation">Operación</label>
+                <select id="operation">
+                    <option>AND</option>
+                    <option>OR</option>
+                    <option>XOR</option>
+                </select>
+            </div>
+            <div>
+                <label for="aluB">Cadena binaria B</label>
+                <input id="aluB" type="text" value="1100" maxlength="64">
+            </div>
+        </div>
+
+        <button id="aluBtn" class="secondary">Ejecutar ALU</button>
+
+        <div id="aluResultBox" class="alu-result hidden">
+            <span>RESULTADO</span>
+            <strong id="aluResult">—</strong>
+            <div id="aluRows" class="alu-table"></div>
+        </div>
+    </section>
+
+    <section class="delivery card">
+        <div>
+            <span class="eyebrow">ENTREGA</span>
+            <h3>Proyecto listo para publicar</h3>
+            <p>Completa el nombre y, después de desplegar en Vercel, entrega el enlace público de la aplicación.</p>
+        </div>
+        <button id="copyLinkBtn" class="secondary">Copiar enlace</button>
+    </section>
+</main>
+
+<footer>
+    Conversor Multibase &amp; ALU · Proyecto académico
+</footer>
+
+<script>
+const $ = (selector) => document.querySelector(selector);
+
+const numberInput = $("#number");
+const baseInput = $("#base");
+const bitsInput = $("#bits");
+const convertBtn = $("#convertBtn");
+const inputStatus = $("#inputStatus");
+
+function setStatus(element, text, type = "neutral") {
+    element.textContent = text;
+    element.className = `status ${type}`;
+}
+
+function renderValidation(data) {
+    $("#validationGrid").innerHTML = `
+        <div class="validation-item">
+            <span>ARQUITECTURA</span>
+            <strong>${data.architecture}</strong>
+        </div>
+        <div class="validation-item">
+            <span>TAMAÑO</span>
+            <strong>${bitsInput.value} bits</strong>
+        </div>
+        <div class="validation-item">
+            <span>VALOR BASE 10</span>
+            <strong>${data.decimal_value}</strong>
+        </div>
+        <div class="validation-item">
+            <span>REGISTRO</span>
+            <strong>0 — ${data.max_value}</strong>
+        </div>
+    `;
+    $("#validationCard").classList.remove("hidden");
+}
+
+function renderSteps(data) {
+    $("#positionalSteps").innerHTML = data.positional_steps.map((step) =>
+        `<div class="step">
+            ${step.digit} × base<sup>${step.power}</sup>
+            = ${step.contribution}
+        </div>`
+    ).join("");
+
+    const steps = data.division_steps.binary;
+    $("#divisionSteps").innerHTML = steps.map((step) =>
+        `<div class="step">
+            ${step.dividend} ÷ 2 = ${step.quotient}
+            &nbsp; residuo ${step.remainder}
+        </div>`
+    ).join("");
+}
+
+async function convert() {
+    const number = numberInput.value.trim();
+
+    if (!number) {
+        setStatus(inputStatus, "Ingresa un número", "error");
+        return;
+    }
+
+    convertBtn.disabled = true;
+    setStatus(inputStatus, "Validando…");
+
+    try {
+        const response = await fetch("/api/convert", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                number,
+                base: Number(baseInput.value),
+                bits: Number(bitsInput.value)
+            })
+        });
+
+        const data = await response.json();
+
+        if (!data.ok) {
+            $("#validationCard").classList.remove("hidden");
+            $("#validationGrid").innerHTML = `
+                <div class="validation-item" style="grid-column: 1/-1">
+                    <span>ERROR DE VALIDACIÓN</span>
+                    <strong style="color: #ff8998">${data.error}</strong>
+                </div>`;
+            $("#resultsCard").classList.add("hidden");
+            $("#algorithmCard").classList.add("hidden");
+            setStatus(inputStatus, data.type === "overflow" ? "Overflow" : "Dato inválido", "error");
+            return;
+        }
+
+        $("#binaryResult").textContent = data.binary;
+        $("#octalResult").textContent = data.octal;
+        $("#decimalResult").textContent = data.decimal;
+        $("#hexResult").textContent = data.hexadecimal;
+        $("#architectureBadge").textContent = `${data.architecture} · ${bitsInput.value} bits`;
+
+        renderValidation(data);
+        renderSteps(data);
+
+        $("#resultsCard").classList.remove("hidden");
+        $("#algorithmCard").classList.remove("hidden");
+
+        setStatus(inputStatus, "Conversión correcta", "success");
+    } catch (error) {
+        setStatus(inputStatus, "No se pudo conectar con Python", "error");
+    } finally {
+        convertBtn.disabled = false;
+    }
+}
+
+async function executeALU() {
+    const a = $("#aluA").value.trim();
+    const b = $("#aluB").value.trim();
+    const operation = $("#operation").value;
+
+    if (a.length !== b.length) {
+        alert("Las dos cadenas deben tener la misma cantidad de bits.");
+        return;
+    }
+
+    try {
+        const response = await fetch("/api/alu", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({a, b, operation})
+        });
+
+        const data = await response.json();
+
+        if (!data.ok) {
+            alert(data.error);
+            return;
+        }
+
+        $("#aluResult").textContent = data.result;
+        $("#aluRows").innerHTML = data.rows.map((row) =>
+            `<div class="alu-bit">
+                bit ${row.position}<br>
+                ${row.a} ${operation} ${row.b} → <strong>${row.result}</strong>
+            </div>`
+        ).join("");
+
+        $("#aluResultBox").classList.remove("hidden");
+    } catch {
+        alert("No se pudo conectar con el servidor Python.");
+    }
+}
+
+convertBtn.addEventListener("click", convert);
+$("#aluBtn").addEventListener("click", executeALU);
+
+document.querySelectorAll("[data-copy]").forEach(button => {
+    button.addEventListener("click", async () => {
+        const value = $("#" + button.dataset.copy).textContent;
+        await navigator.clipboard.writeText(value);
+        button.textContent = "✓ Copiado";
+        setTimeout(() => button.textContent = "Copiar", 1200);
+    });
+});
+
+$("#copyLinkBtn").addEventListener("click", async () => {
+    try {
+        await navigator.clipboard.writeText(window.location.href);
+        $("#copyLinkBtn").textContent = "✓ Enlace copiado";
+        setTimeout(() => $("#copyLinkBtn").textContent = "Copiar enlace", 1500);
+    } catch {
+        alert(window.location.href);
+    }
+});
+
+numberInput.addEventListener("keydown", event => {
+    if (event.key === "Enter") convert();
+});
+
+</script>
+</body>
+</html>
